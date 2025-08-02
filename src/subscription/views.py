@@ -22,6 +22,15 @@ class SubscriptionViewSet(ModelViewSet):
         return serializer.data
 
 
+class PlanApiViewSet(ModelViewSet):
+    queryset = Plan.objects.all()
+    serializer_class = PlanSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()
+        return serializer.data
+
+
 class SubscriptionCancelView(APIView):
     def post(self, request, *args, **kwargs):
         subscription_id = kwargs.get("subscription_id")
@@ -36,3 +45,8 @@ class SubscriptionCancelView(APIView):
             )
         except Subscription.DoesNotExist:
             return Response({"error": "Subscription not found."}, status=404)
+
+
+def SubscriptionListView(request):
+    subscriptions = Subscription.objects.select_related("user", "plan")
+    return render(request, "subscriptions/list.html", {"subscriptions": subscriptions})
