@@ -7,9 +7,9 @@ from drf_yasg import openapi
 # Swagger/OpenAPI Schema View
 schema_view = get_schema_view(
     openapi.Info(
-        title="Subscription & Exchange API",
+        title="Subscription & exchange API",
         default_version="v1",
-        description="API documentation for Subscription Management & Currency Exchange System",
+        description="API documentation for Subscription Management & Currency exchange System",
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),

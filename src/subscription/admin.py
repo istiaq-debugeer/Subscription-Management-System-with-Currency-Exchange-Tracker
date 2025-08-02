@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib import admin
 from .models import Plan, Subscription
-from exchange.models import ExchangeRate
+from exchange.models import exchangeRate
 
 
 @admin.register(Plan)

@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class ExchangeRate(models.Model):
+class exchangeRate(models.Model):
     base_currency = models.CharField(max_length=10)
     target_currency = models.CharField(max_length=10)
     rate = models.DecimalField(max_digits=20, decimal_places=6)

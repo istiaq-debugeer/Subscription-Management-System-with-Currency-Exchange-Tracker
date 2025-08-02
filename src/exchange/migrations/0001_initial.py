@@ -7,22 +7,29 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='ExchangeRate',
+            name="exchangeRate",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('base_currency', models.CharField(max_length=10)),
-                ('target_currency', models.CharField(max_length=10)),
-                ('rate', models.DecimalField(decimal_places=6, max_digits=20)),
-                ('fetched_at', models.DateTimeField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("base_currency", models.CharField(max_length=10)),
+                ("target_currency", models.CharField(max_length=10)),
+                ("rate", models.DecimalField(decimal_places=6, max_digits=20)),
+                ("fetched_at", models.DateTimeField()),
             ],
             options={
-                'ordering': ['-fetched_at'],
-                'unique_together': {('base_currency', 'target_currency', 'fetched_at')},
+                "ordering": ["-fetched_at"],
+                "unique_together": {("base_currency", "target_currency", "fetched_at")},
             },
         ),
     ]

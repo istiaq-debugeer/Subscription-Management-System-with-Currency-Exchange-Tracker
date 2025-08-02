@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 
-from .models import ExchangeRate
-from .serializers import ExchangeRateSerializer
+from .models import exchangeRate
+from .serializers import exchangeRateSerializer
 from .helpers import get_exchange_rates
 from django.http import JsonResponse
 from rest_framework.views import APIView
@@ -9,12 +9,12 @@ from rest_framework import status
 from datetime import datetime
 
 
-class ExchangeRateViewSet(ModelViewSet):
-    queryset = ExchangeRate.objects.all()
-    serializer_class = ExchangeRateSerializer
+class exchangeRateViewSet(ModelViewSet):
+    queryset = exchangeRate.objects.all()
+    serializer_class = exchangeRateSerializer
 
 
-class ExchangeRateApiview(APIView):
+class exchangeRateApiview(APIView):
     def get(self, request):
         base = request.GET.get("base", "USD")
         target = request.GET.get("target", "BDT")
@@ -26,7 +26,7 @@ class ExchangeRateApiview(APIView):
             rate = data.get("rate")
 
             if rate:
-                ExchangeRate.objects.create(
+                exchangeRate.objects.create(
                     base_currency=base,
                     target_currency=target,
                     rate=rate,
