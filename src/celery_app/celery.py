@@ -2,34 +2,23 @@
 from celery import Celery
 from celery.schedules import crontab
 
-
 celery = Celery(
-    "notification_worker",
+    "subscription_management",
     broker="redis://localhost:6379/0",
     backend="redis://localhost:6379/0",
-    # include=[
-    #     "app.tasks.email",
-    #     "app.tasks.instant_notification",
-    #     "app.tasks.periodic_notification",
-    # ]
 )
 
 celery.conf.timezone = 'UTC'
 celery.conf.enable_utc = True
 
-celery.conf.task_routes = {
-    "app.tasks.instant_notification.send_instant_notification": {
-        "queue": "instant_notification"
-    },
-}
 
+# Schedule the exchange rate fetch task every hour
 celery.conf.beat_schedule = {
-    'run-every-day': {
-        'task': 'app.tasks.periodic_notification.periodic_notification_task',
-        'schedule': crontab(hour=2, minute=0),  # 2:00 AM UTC == 8:00 AM BST
-        # 'schedule': 120.0,
-        # 'schedule': 300.0,
+    'fetch-exchange-rate-every-hour': {
+        'task': 'exchange.tasks.fetch_and_store_exchange_rate',
+        'schedule': crontab(minute=0, hour='*'),  # every hour
+        'args': ('USD', 'EUR'),  # Change as needed
     },
 }
 
-celery.autodiscover_tasks(["app.tasks"])
+celery.autodiscover_tasks(["exchange", "subscription"])
