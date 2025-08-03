@@ -1,0 +1,7 @@
+asgiref==3.9.1
+Django==5.2.4
+djangorestframework==3.16.0
+simplejwt==2.0.1
+sqlparse==0.5.3
+typing==3.7.4.3
+celery

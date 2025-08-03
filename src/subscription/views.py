@@ -4,10 +4,12 @@ from .models import Plan, Subscription
 from .serializers import PlanSerializer, SubscriptionSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 
-# Create your views here.
 class SubscriptionViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
 
@@ -22,7 +24,20 @@ class SubscriptionViewSet(ModelViewSet):
         return serializer.data
 
 
+class PlanApiViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
+
+    queryset = Plan.objects.all()
+    serializer_class = PlanSerializer
+
+    def perform_create(self, serializer):
+        serializer.save()
+        return serializer.data
+
+
 class SubscriptionCancelView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, *args, **kwargs):
         subscription_id = kwargs.get("subscription_id")
         try:
@@ -36,3 +51,8 @@ class SubscriptionCancelView(APIView):
             )
         except Subscription.DoesNotExist:
             return Response({"error": "Subscription not found."}, status=404)
+
+
+def SubscriptionListView(request):
+    subscriptions = Subscription.objects.select_related("user", "plan")
+    return render(request, "subscriptions/list.html", {"subscriptions": subscriptions})

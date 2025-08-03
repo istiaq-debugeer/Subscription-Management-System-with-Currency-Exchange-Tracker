@@ -9,14 +9,10 @@ class PlanSerializer(serializers.ModelSerializer):
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):
-    plan = PlanSerializer()
-
     class Meta:
         model = Subscription
-        fields = "__all__"
+        fields = ["id", "plan", "start_date", "end_date", "status"]  # exclude user
 
     def create(self, validated_data):
-        plan_data = validated_data.pop("plan")
-        plan = Plan.objects.create(**plan_data)
-        subscription = Subscription.objects.create(plan=plan, **validated_data)
-        return subscription
+        validated_data["user"] = self.context["request"].user
+        return super().create(validated_data)
