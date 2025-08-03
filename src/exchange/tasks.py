@@ -1,8 +1,10 @@
 from celery import shared_task
 from django.utils import timezone
-from .exchange.models import exchangeRate
+from .models import exchangeRate
+# from celery_app.celery import celery
 
 
+# @celery.task
 @shared_task
 def fetch_and_store_exchange_rate(base: str, target: str):
     import requests

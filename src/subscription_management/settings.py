@@ -75,9 +75,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "subscription_management.wsgi.application"
 
 load_dotenv()
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-print("password:", os.getenv("DATABASE_USERNAME"))
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -89,7 +87,26 @@ DATABASES = {
     }
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
 
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "JWT token. Format: Bearer <token>",
+        }
+    },
+    "USE_SESSION_AUTH": False,
+}
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 

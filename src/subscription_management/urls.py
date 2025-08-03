@@ -4,23 +4,22 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-# Swagger/OpenAPI Schema View
 schema_view = get_schema_view(
     openapi.Info(
-        title="Subscription & exchange API",
+        title="Bug Tracker API",
         default_version="v1",
-        description="API documentation for Subscription Management & Currency exchange System",
+        description="API documentation",
     ),
     public=True,
-    permission_classes=(permissions.AllowAny,),
+    authentication_classes=[],
+    permission_classes=[],
 )
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # App URLs
     path("subscriptions/", include("subscription.urls")),
     path("exchange/", include("exchange.urls")),
-    # Swagger & ReDoc
     re_path(
         r"^swagger(?P<format>\.json|\.yaml)$",
         schema_view.without_ui(cache_timeout=0),
